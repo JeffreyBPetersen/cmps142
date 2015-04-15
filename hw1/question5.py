@@ -1,4 +1,5 @@
 import random
+import math
 
 # named constants
 training_size = 500
@@ -32,11 +33,15 @@ def label_instances(instances, labelling_mode):
   return labelled_instances
 
 # takes weights and unlabelled instance
-def calculate_prediction(weights, instance):
-  prediction = weights[0]
+def calculate_hypothesis(weights, instance):
+  dot_product = weights[0]
   for i in range(dimensionality):
-    prediction += weights[i+1] * instance[i]
-  return 0 if prediction < 0.5 else 1
+    dot_product += weights[i+1] * instance[i]
+  return 1 / (1 + math.exp(-dot_product))
+  
+# takes weights and unlabelled instance
+def calculate_prediction(hypothesis):
+  return 0 if hypothesis < 0.5 else 1
 
 # takes learning rate, weights, labelled instance, and predicted value for label
 def update_weights(learning_rate, weights, instance, prediction):
@@ -51,6 +56,8 @@ print "UCSC Machine Learning hw1q5\n"
 # generate instances as [components]
 training = generate_instances(training_size, dimensionality)
 testing = generate_instances(testing_size, dimensionality)
+# set learning_rate
+learning_rate = float(raw_input("Set learning rate within (0.0, 1.0]: "))
 # label training instances as ([components], label)
 experiment_selection = raw_input("Select experiment - enter a, b, or c: ")
 training = label_instances(training, experiment_selection)
@@ -60,11 +67,75 @@ weights = []
 for i in range(dimensionality+1):
   weights.append(0)
 
-for instance in training:
-  print instance
-  prediction = calculate_prediction(weights, instance[0])
-  print prediction
-  weights = update_weights(learning_rate, weights, instance, prediction)
-  print weights
+if experiment_selection == "a":
+  print "- experiment a -"
+  epochs = 0
+  accuracy = 0
+  while accuracy < 1 and epochs < 1000:
+    epochs += 1
+    hits = 0.0
+    misses = 0.0
+    for instance in training:
+      prediction = calculate_prediction(calculate_hypothesis(weights, instance[0]))
+      weights = update_weights(learning_rate, weights, instance, prediction)
+    for instance in testing:
+      prediction = calculate_prediction(calculate_hypothesis(weights, instance[0]))
+      if prediction == instance[1]:
+        hits += 1
+      else:
+        misses += 1
+    accuracy = hits / (hits + misses)
+    print "epoch #", epochs, ": accuracy = ", accuracy
+  print "epochs = ", epochs
+elif experiment_selection == "b":
+  print "- experiment b -"
+  epochs = 0
+  accuracy = 0
+  while accuracy < 1 and epochs < 1000:
+    epochs += 1
+    hits = 0.0
+    misses = 0.0
+    for instance in training:
+      prediction = calculate_prediction(calculate_hypothesis(weights, instance[0]))
+      weights = update_weights(learning_rate, weights, instance, prediction)
+    for instance in testing:
+      prediction = calculate_prediction(calculate_hypothesis(weights, instance[0]))
+      if prediction == instance[1]:
+        hits += 1
+      else:
+        misses += 1
+    accuracy = hits / (hits + misses)
+    print "epoch #", epochs, ": accuracy = ", accuracy
+  print "epochs = ", epochs
+elif experiment_selection == "c":
+  print "- experiment c -"
+  epochs = 0
+  accuracy = 0
+  weights_history = []
+  average_weights = []
+  average_weights_2nd_epoch = []
+  for i in range(dimensionality):
+    average_weights.append(0)
+    average_weights_2nd_epoch.append(0)
+  while epochs < 2:
+    epochs += 1
+    hits = 0.0
+    misses = 0.0
+    for instance in training:
+      prediction = calculate_prediction(calculate_hypothesis(weights, instance[0]))
+      weights = update_weights(learning_rate, weights, instance, prediction)
+      weights_history.append(weights)
+  for i in range(1000):
+    for j in range(dimensionality):
+      average_weights[j] += weights_history[i][j]
+      if i > 499:
+        average_weights_2nd_epoch[j] += weights_history[i][j]
+  for i in range(dimensionality):
+    average_weights[i] /= 1000
+    average_weights_2nd_epoch[i] /= 500
+  print "average weights: ", average_weights
+  print "average 2nd epoch weights: ", average_weights_2nd_epoch
+else:
+  print "ERROR: invalid experiment selection"
 
 raw_input("--- press any key to end program ---")
