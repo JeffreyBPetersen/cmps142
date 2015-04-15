@@ -5,11 +5,11 @@ import math
 training_size = 500
 testing_size = 500
 dimensionality = 11
-learning_rate = 1 # set within range [0,1]
 
 ## implement update_weights(weights)
 
 # takes two integers
+# returns array of instances
 def generate_instances(quantity, dimensionality):
   instances = []
   for instance in range(quantity):
@@ -19,6 +19,7 @@ def generate_instances(quantity, dimensionality):
   return instances
 
 # takes unlabelled instances and one of ["a", "b", "c"]
+# returns array of tuples: (instance, label)
 def label_instances(instances, labelling_mode):
   labelled_instances = []
   for instance in instances:
@@ -33,17 +34,20 @@ def label_instances(instances, labelling_mode):
   return labelled_instances
 
 # takes weights and unlabelled instance
+# returns hypothesis
 def calculate_hypothesis(weights, instance):
   dot_product = weights[0]
   for i in range(dimensionality):
     dot_product += weights[i+1] * instance[i]
   return 1 / (1 + math.exp(-dot_product))
   
-# takes weights and unlabelled instance
+# takes hypothesis
+# returns predicted label
 def calculate_prediction(hypothesis):
   return 0 if hypothesis < 0.5 else 1
 
 # takes learning rate, weights, labelled instance, and predicted value for label
+# returns updated weights
 def update_weights(learning_rate, weights, instance, prediction):
   new_weights = []
   new_weights.append(weights[0] + learning_rate * (instance[1] - prediction))
