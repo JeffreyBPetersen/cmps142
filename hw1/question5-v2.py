@@ -73,4 +73,31 @@ def run_experiment_a(training, testing, learning_rate):
     print "epoch #", epochs, ", prediction errors: ", prediction_errors
   print "total prediction errors: ", total_prediction_errors
   
+def run_experiment_b(training, testing, learning_rate):
+  training_labels = [get_instance_label(instance, "b") for instance in training]
+  testing_labels = [get_instance_label(instance, "b") for instance in testing]
+  weights = initialize_weights(len(training[0]))
+  epochs = 0
+  prediction_errors = 0
+  total_prediction_errors = 0
+  accuracy = 0
+  while (accuracy != 1 and epochs < 100) or (accuracy < 0.95 and epochs < 1000):
+    epochs += 1
+    prediction_errors = 0
+    for instance, label in zip(training, training_labels):
+      if get_hypothesis_label(calculate_hypothesis(weights, instance)) != label:
+        prediction_errors += 1
+        weights = update_weights_on_instance(learning_rate, weights, instance, label)
+    hits = 0
+    for instance, label in zip(testing, testing_labels):
+      if get_hypothesis_label(calculate_hypothesis(weights, instance)) == label:
+        hits += 1
+    accuracy = hits / len(testing)
+    total_prediction_errors += prediction_errors
+    print "epoch #", epochs, ", prediction errors: ", prediction_errors
+  print "total prediction errors: ", total_prediction_errors
+  if accuracy < 1:
+    "imperfect accuracy after >100 epochs, accuracy: ", accuracy
+  if epochs == 1000:
+    print "could not correctly predict testing labels after 1000 epochs"
   
