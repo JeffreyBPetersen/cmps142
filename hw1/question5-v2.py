@@ -34,10 +34,10 @@ def initialize_weights(dimensionality):
   return [0 for i in range(dimensionality + 1)]
     
 def calculate_hypothesis(weights, instance):
-  hypothesis = weights[0]
+  dot_product = weights[0]
   for i in range(len(instance)):
-    hypothesis += weights[i+1] * instance[i]
-  return hypothesis
+    dot_product += weights[i+1] * instance[i]
+  return 1 / (1 + math.e**(-dot_product))
 
 def get_hypothesis_label(hypothesis):
   return 0 if hypothesis < 0.5 else 1
@@ -100,4 +100,56 @@ def run_experiment_b(training, testing, learning_rate):
     "imperfect accuracy after >100 epochs, accuracy: ", accuracy
   if epochs == 1000:
     print "could not correctly predict testing labels after 1000 epochs"
-  
+    
+def log_likelihood(weights, instances, labels):
+  likelihood = 0
+  for instance, label in zip(instances, labels):
+    hypothesis = calculate_hypothesis(weights, instance)
+    likelihood += label * math.log(hypothesis) + (1 - label) * math.log(1 - hypothesis)
+  return likelihood
+    
+def run_experiment_c(training, testing, learning_rate):
+  training_labels = [get_instance_label(instance, "c") for instance in training]
+  testing_labels = [get_instance_label(instance, "c") for instance in testing]
+  weights = initialize_weights(len(training[0]))
+  weights_history = []
+  epochs = 0
+  while epochs < 2:
+    epochs += 1
+    for instance, label in zip(training, training_labels):
+      if get_hypothesis_label(calculate_hypothesis(weights, instance)) != label:
+        weights = update_weights_on_instance(learning_rate, weights, instance, label)
+      weights_history.append(weights)
+  average_weights = initialize_weights(len(training[0]))
+  average_2nd_epoch_weights = initialize_weights(len(training[0]))
+  final_weights = weights_history[-1]
+  for i in range(len(weights_history)):
+    for j in range(len(weights_history[i])):
+      average_weights[j] += weights_history[i][j]
+      if i >= len(training):
+        average_2nd_epoch_weights[j] += weights_history[i][j]
+  for i in range(len(average_weights)):
+    average_weights[i] /= len(training)
+    average_2nd_epoch_weights[i] /= len(training)
+  avg_weights_likelihood = log_likelihood(average_weights, testing, testing_labels)
+  avg_weights_2_likelihood = log_likelihood(average_2nd_epoch_weights, testing, testing_labels)
+  final_weights_likelihood = log_likelihood(final_weights, testing, testing_labels)
+  print "average weights: ", average_weights, ", log likelihood: ", avg_weights_likelihood
+  print "average 2nd epoch weights: ", average_2nd_epoch_weights, ", log likelihood: ", avg_weights_2_likelihood
+  print "final weights: ", final_weights, ", log likelihood: ", final_weights_likelihood
+
+def main():
+  training = generate_instances(500,11)
+  testing = generate_instances(500,11)
+  learning_rate = float(raw_input("Set learning rate within (0.0, 1.0]: "))
+  experiment_selection = raw_input("Select experiment - enter a, b, or c: ")
+  if experiment_selection == "a":
+    run_experiment_a(training, testing, learning_rate)
+  elif experiment_selection == "b":
+    run_experiment_b(training, testing, learning_rate)
+  elif experiment_selection == "c":
+    run_experiment_c(training, testing, learning_rate)
+  else:
+    print "ERROR: experiment selection not found"
+
+main()
