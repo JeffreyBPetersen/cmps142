@@ -72,6 +72,7 @@ def run_experiment_a(training, testing, learning_rate):
     total_prediction_errors += prediction_errors
     print "epoch #", epochs, ", prediction errors: ", prediction_errors
   print "total prediction errors: ", total_prediction_errors
+  print "final hypothesis: ", weights
   
 def run_experiment_b(training, testing, learning_rate):
   training_labels = [get_instance_label(instance, "b") for instance in training]
