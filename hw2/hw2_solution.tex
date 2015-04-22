@@ -8,16 +8,65 @@
         \item 
             \begin{enumerate}
                 \item
+                    \begin{tabular}{l | c c c c c c}
+                        Algorithm      & Correct & Incorrect & MAE & RMS & RAE (\%) & RSE (\%)\\
+                        \hline
+                        Nearest Neighbor (IB1) & 768 & 0   & 0      & 0      & 0 & 0 \\
+                        Naive Bayes            & 586 & 182 & 0.2811 & 0.4133 & 61.8486 & 86.7082 \\
+                        Logistic Regression    & 601 & 167 & 0.3063 & 0.3908 & 67.3928 & 81.9907
+                    \end{tabular}
                 \item 
+                \item
+                    \begin{tabular}{l | c c c c c c}
+                        Algorithm      & Correct & Incorrect & MAE & RMS & RAE (\%) & RSE (\%)\\
+                        \hline
+                        Nearest Neighbor (IB1) & 539 & 229 & 0.2982 & 0.5461 & 65.6046 & 114.5627 \\
+                        Naive Bayes            & 586 & 182 & 0.2841 & 0.4168 & 62.5028 & 87.4349 \\
+                        Logistic Regression    & 593 & 175 & 0.3094 & 0.3954 & 68.0819 & 82.9651
+                    \end{tabular}
+                \item
+                \item
                 \item
             \end{enumerate}
         \item
+            \begin{enumerate}
+                \item The outcome space is the set of possible combinations of whether
+                      each of the two children were male or female. Given in the notation
+                      of $(younger, older)$, this leads to the outcome space:
+                      $$
+                        (B, G), (G, B), (B, B), (G, G)
+                      $$
+                \item We want the probability of at least one child being a girl, given
+                      that we already know one child is a boy. We reduce the outcome space
+                      by removing the possiblity of $(G, G)$. Then the remaining outcomes
+                      are $(B, G), (G, B), (B, B)$. This leaves us with a probability
+                      of $\frac{2}{3}$.
+                \item Given that we know one child is a boy, then we are left with two
+                    cases: either it was the first or the second child.  \\
+                    \begin{tabular}{l | r}
+                        \begin{tabular}{c c}
+                            B & B \\
+                            B & G \\
+                            -G & B \\
+                            -G & G
+                        \end{tabular}
+                        &
+                        \begin{tabular}{c c}
+                            B & B \\
+                            -B & G \\
+                            G & B \\
+                            -G & G
+                        \end{tabular}
+                    \end{tabular} \\
+                    This results in two cases where one child is a girl, out of four
+                    remaining cases, for a probability of $\frac{1}{2}$.
+            \end{enumerate}
         \item
         \item
-%           Matrix example: (for table change pmatrix to tabular)
-%                X = \begin{pmatrix}
-%                    9 & 2 \\
-%                    0 & 8
-%                \end{pmatrix}
+            $$ E[V]E[W] = E[VW] $$
+            $$ E[V] = \sum_{i = 1}^{n} v_i P(v_i), E[W] = \sum_{j = 1}^{n} w_i P(w_i) $$
+            $$ E[VW] = \sum_{i = 1}^{n} v_iw_iP(v_i, w_i) = \sum_{i = 1}^{n} v_iP(v_i)w_iP(v_i)$$
+            $$ = \sum_{i = 1}^{n} v_i P(v_i) \sum_{i = 1}^{n} w_i P(w_i) $$
+            $$ = E[V]E[W] $$
 \end{enumerate}
 \end{document}
