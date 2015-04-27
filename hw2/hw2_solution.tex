@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath, amssymb}
 \title{CMPS 142: Homework Assignment 2}
-\author{Raymond "The Dude" Colebaugh - 1377877\\Jeffery "\#YOLOSWAG" Petersen - ID\\Peter "Gettin' there man" Czupil - 1317993}
+\author{Raymond Colebaugh - 1377877\\Jeffery Petersen - ID\\Peter Czupil - 1317993}
 \begin{document}
 \maketitle
 \begin{enumerate}
@@ -26,7 +26,7 @@
                     \end{tabular}
                 \item
                    After applying the normalization filter to the dataset, the attributes now have real                		numbered values ranging from $0$ to $1$.
-		Running the $1$-fold cross validation yields the same accuracies as well because 					although the attributes now have lesser values, the portions relative to the whole stay 				the same.
+		Running the $10$-fold cross validation yields the same accuracies as well because 					although the attributes now have lesser values, the cumulative value has also decreased 			correspondingly.
 		The weight vector changed pretty radically however, before normalization the absolute 			values of the weight vector were very small (between $0$ and $1$). After the 					normalization, the absolute values became much greater (anywhere from $2$ to $8$ on 			average). This is because with classification, the prediction rule depends on how close a 			value is to a $0$ or a $1$. Before the normalization, the attribute values were large and 			thus must be multiplied by a small number to get a number between $0$ and $1$. After 			normalization the roles have reversed thus the weights are large.
                 \item
 	          When changing the ridge parameter to $0$, the value of the weights don't seem to 				change, neither does the accuracy.
@@ -34,7 +34,7 @@
                 \item
 	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorithm in Weka supports this hypothesis. 3NN 				yields an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
                 \item
-                   We would expect the results to be less accurate when running the classifies because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
+                   We would expect the results to be less accurate when running the classifierSs because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
                 \item
                    When we ran nearest neighbor on the normalized (features) modified training set, 10 fold 		cross-folding was more inaccurate than nearest neighbor learning from the training sets 			of the previous parts. The accuracy when using the entire training set as the test set was 			$\%100$ however. Naive bayes was  more accurate than the previous two training sets 				and logistic regression was slightly more accurate than the previous training sets as well.   
             \end{enumerate}
