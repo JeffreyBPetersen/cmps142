@@ -80,10 +80,10 @@
             If AP courses are taken, predict $H$ if the GPA is between ..., and
             if AP courses are not taken, predict $H$ if the GPA is between ... \\
         \item
-            $$ E[V]E[W] = E[VW] $$
-            $$ E[V] = \sum_{i = 1}^{n} v_i P(v_i), E[W] = \sum_{j = 1}^{n} w_i P(w_i) $$
-            $$ E[VW] = \sum_{i = 1}^{n} v_iw_iP(v_i, w_i) = \sum_{i = 1}^{n} v_iP(v_i)w_iP(v_i)$$
-            $$ = \sum_{i = 1}^{n} v_i P(v_i) \sum_{i = 1}^{n} w_i P(w_i) $$
-            $$ = E[V]E[W] $$
+            $$ E[V]E[W] = E[VW] \ \ \ (to\ prove)$$
+            $$ E[V] = \sum_{i = 1}^{n} v_i P(v_i), E[W] = \sum_{j = 1}^{n} w_i P(w_i) \ \ \ (Definition)$$
+            $$ E[VW] = \sum_{i = 1}^{n} v_iw_iP(v_i, w_i) = \sum_{i = 1}^{n} v_iP(v_i)w_iP(v_i) \ \ \ (independence)$$
+            $$ = \sum_{i = 1}^{n} v_i P(v_i) \sum_{i = 1}^{n} w_i P(w_i) \ \ \ (Associativity)$$
+            $$ = E[V]E[W]\ _\blacksquare$$
 \end{enumerate}
 \end{document}
