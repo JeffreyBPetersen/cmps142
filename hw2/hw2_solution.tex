@@ -32,9 +32,11 @@
 	          When changing the ridge parameter to $0$, the value of the weights don't seem to 				change, neither does the accuracy.
 		When changing the ridge parameter to $0.3$ however, the values of the weights 					decreases slighty while the accuracy stays the same. 
                 \item
-	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorith in Weka supports this hypothesis. 3NN yields 		an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
+	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorithm in Weka supports this hypothesis. 3NN 				yields an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
                 \item
-                    
+                   We would expect the results to be less accurate when running the classifies because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
+                \item
+                   When we ran nearest neighbor on the normalized (features) modified training set, 10 fold 		cross-folding was more inaccurate than nearest neighbor learning from the training sets 			of the previous parts. The accuracy when using the entire training set as the test set was 			$\%100$ however. Naive bayes was  more accurate than the previous two training sets 				and logistic regression was slightly more accurate than the previous training sets as well.   
             \end{enumerate}
         \item
             \begin{enumerate}
