@@ -25,8 +25,16 @@
                         Logistic Regression    & 593 & 175 & 0.3094 & 0.3954 & 68.0819 & 82.9651
                     \end{tabular}
                 \item
+                   After applying the normalization filter to the dataset, the attributes now have real                		numbered values ranging from $0$ to $1$.
+		Running the $1$-fold cross validation yields the same accuracies as well because 					although the attributes now have lesser values, the portions relative to the whole stay 				the same.
+		The weight vector changed pretty radically however, before normalization the absolute 			values of the weight vector were very small (between $0$ and $1$). After the 					normalization, the absolute values became much greater (anywhere from $2$ to $8$ on 			average). This is because with classification, the prediction rule depends on how close a 			value is to a $0$ or a $1$. Before the normalization, the attribute values were large and 			thus must be multiplied by a small number to get a number between $0$ and $1$. After 			normalization the roles have reversed thus the weights are large.
                 \item
+	          When changing the ridge parameter to $0$, the value of the weights don't seem to 				change, neither does the accuracy.
+		When changing the ridge parameter to $0.3$ however, the values of the weights 					decreases slighty while the accuracy stays the same. 
                 \item
+	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorith in Weka supports this hypothesis. 3NN yields 		an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
+                \item
+                    
             \end{enumerate}
         \item
             \begin{enumerate}
