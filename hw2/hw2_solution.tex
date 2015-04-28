@@ -1,5 +1,6 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, mathtools}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=1in]{geometry}
 \title{CMPS 142: Homework Assignment 2}
 \author{Raymond Colebaugh - 1377877\\Jeffery Petersen - ID\\Peter Czupil - 1317993}
 \begin{document}
@@ -52,9 +53,9 @@
                 \item
 	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorithm in Weka supports this hypothesis. 3NN 				yields an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
                 \item
-                   We would expect the results to be less accurate when running the classifierSs because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
+                   We would expect the results to be less accurate when running the classifiers because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
                 \item
-                   When we ran nearest neighbor on the normalized (features) modified training set, 10 fold 		cross-folding was more inaccurate than nearest neighbor learning from the training sets 			of the previous parts. The accuracy when using the entire training set as the test set was 			$\%100$ however. Naive bayes was  more accurate than the previous two training sets 				and logistic regression was slightly more accurate than the previous training sets as well.   
+                   When we ran nearest neighbor on the normalized (features) modified training set, 10 fold 		cross-validation was more inaccurate than nearest neighbor learning from the training 				sets 	of the previous parts. The accuracy when using the entire training set as the test set 			was 	$\%100$ however. Naive bayes was  more accurate than the previous two training 			sets 	and logistic regression was slightly more accurate than the previous training sets as 			well.   
             \end{enumerate}
         \item
             \begin{enumerate}
@@ -70,20 +71,25 @@
                       are $(B, G), (G, B), (B, B)$. This leaves us with a probability
                       of $\frac{2}{3}$.
                 \item Given that we know one child is a boy, then we are left with two
-                    cases: either it was the first or the second child.  \\
+                    cases: either it was the first or the second child. In the case that
+                    we saw the first child, we can ignore the two last possibilities
+                    $(G, B)$ and $(G, G)$. In the case that we saw the second child, we
+                    can ignore the second and last cases, $(B, G)$ and $(G, G)$\\
                     \begin{tabular}{l | r}
-                        \begin{tabular}{c c}
-                            B & B \\
-                            B & G \\
-                            -G & B \\
-                            -G & G
+                        \begin{tabular}{l c c}
+                             & First Child \\
+                             & B & B \\
+                             & B & G \\
+                            $\rightarrow$ & G & B \\
+                            $\rightarrow$ & G & G
                         \end{tabular}
                         &
-                        \begin{tabular}{c c}
-                            B & B \\
-                            -B & G \\
-                            G & B \\
-                            -G & G
+                        \begin{tabular}{c c r}
+                            & Second Child \\
+                            B & B & \\
+                            B & G & $\leftarrow$ \\
+                            G & B & \\
+                            G & G & $\leftarrow$
                         \end{tabular}
                     \end{tabular} \\
                     This results in two cases where one child is a girl, out of four
@@ -91,9 +97,42 @@
             \end{enumerate}
         \item
             Given the existing data, we can calculate the mean of the GPA of
-            honors students to be $ \frac{4.0 + 3.7 + 2.5}{3} = 3.4 $. The mean of the GPA for normal 			  students is 3.0.
-            $$ P( X_{GPA} | H ) = \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} }$$
-            $$ P( X_{AP}  | H) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
+            honors students to be $ \mu_H = \frac{4.0 + 3.7 + 2.5}{3} = 3.4 $, and a
+            standard deviation of 
+            $$ \sigma_H = \sqrt{\frac{(4.0 - \mu_H)^2 + (3.7 - \mu_H)^2 + (2.5 - \mu_H)^2}{3}} = 0.648 $$
+            We then find the mean and standard deviation of GPA of non-honor students.
+            $$ \mu_N = \frac{3.8 + 3.3 + 3.0 + 3.0 + 2.7 + 2.2}{6} = 3 $$
+            $$ \sigma_N = \sqrt{\frac{(3.8 - \mu_N)^2 + (3.3 - \mu_N)^2 + (3.0 - \mu_N)^2 + (3.0 - \mu_N)^2 + (2.7 - \mu_N)^2 + (2.2 - \mu_N)^2}{6}} = 0.493 $$
+            Last, we calculate the general mean and standard deviation, whether honor students or not:
+            $$ \mu = \frac{4 + 3.7 + 2.5 + 3.8 + 3.3 + 3 + 3 + 2.7 + 2.2}{9} = 3.133 $$
+            $$ \sigma^2 = \frac{ (4-\mu)^2 + (3.7-\mu)^2 + (2.5-\mu)^2 + (3.8-\mu)^2 + (3.3-\mu)^ 2 + (3-\mu)^2 + (3-\mu)^2 + (2.7-\mu)^2 + (2.2-\mu)^2}{9} $$
+            $$ \sigma = 0.582 $$
+            We then find the gaussian functions of $P(GPA = x)$, $P(GPA = x \mid H)$ and $P(GPA = x \mid N)$:
+            % and the gaussian function of $P(GPA = value \mid N)$:
+            $$ P( GPA = x ) = \frac{1}{\sqrt{2 \pi} (0.5)} e^{\frac{(x - 3.1)^2}{1.164}}$$
+            $$ P( GPA = x \mid H ) = \frac{1}{\sqrt{2 \pi} (0.6)} e^{\frac{(x - 3.4)^2 }{1.2} }$$
+            $$ P( GPA = x \mid N ) = \frac{1}{\sqrt{2 \pi} (0.493)} e^{\frac{(x - 3)^2 }{0.986}} $$
+            % $$ P( X_{AP} ) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
+            Now, find $P(AP \mid H)$, $P(not AP \mid H)$, $P(AP \mid N)$, and $P(not AP \mid N)$
+            by maximum likelihood estimation for Bernoulli distribution:
+
+	  $$ P( X_{AP}  | H) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
+	  $$ P( X_{AP}  | N) = \prod\limits_{i = 1}^{n} {P_N}^{x^{(i)}}(1 - P_N)^{1 - x^{(i)}} $$
+
+            $$ P(H | AP) = \frac{P(AP | H) P(H)}{P(AP)} =
+                \frac{\frac{2}{3} * \frac{1}{3}}{\frac{4}{9}} = \frac{2}{9} * \frac{9}{4} = \frac{1}{2}$$
+            $$ P(H | not AP) = \frac{P(not AP | H) P(H)}{P(AP)} =
+            \frac{\frac{1}{3} * \frac{1}{3}}{\frac{5}{9}} = \frac{1}{9} * \frac{9}{5} = \frac{1}{5}$$
+            $$ P(H | GPA = x) = \frac{P(GPA = x | H) P(H) }{P(GPA = x)} $$
+
+            $$ P(H | AP, GPA = x) = P(H | AP) * P(H | GPA = x) $$
+            $$ P(H | not AP, GPA = x) = P(H | not AP) * P(H | GPA = x) $$
+
+            find value(s) where $P(H | AP, GPA = value) = 0.5 $
+            find value(s) where $P(H | not AP, GPA = value) = 0.5 $
+
+            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | AP, GPA) >= 0.5 $
+            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | not AP, GPA) >= 0.5 $  \\
             Our final prediction is: \\
             If AP courses are taken, predict $H$ if the GPA is between ..., and
             if AP courses are not taken, predict $H$ if the GPA is between ... \\
