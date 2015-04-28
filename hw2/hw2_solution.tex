@@ -109,9 +109,9 @@
             $$ \sigma = 0.582 $$
             We then find the gaussian functions of $P(GPA = x)$, $P(GPA = x \mid H)$ and $P(GPA = x \mid N)$:
             % and the gaussian function of $P(GPA = value \mid N)$:
-            $$ P( GPA = x ) = \frac{1}{\sqrt{2 \pi} (0.5)} e^{\frac{(x - 3.1)^2}{1.164}}$$
-            $$ P( GPA = x \mid H ) = \frac{1}{\sqrt{2 \pi} (0.6)} e^{\frac{(x - 3.4)^2 }{1.2} }$$
-            $$ P( GPA = x \mid N ) = \frac{1}{\sqrt{2 \pi} (0.493)} e^{\frac{(x - 3)^2 }{0.986}} $$
+            $$ P( GPA = x ) = \frac{1}{\sqrt{2 \pi} (0.5)} e^{-\frac{(x - 3.1)^2}{0.677}}$$
+            $$ P( GPA = x \mid H ) = \frac{1}{\sqrt{2 \pi} (0.6)} e^{-\frac{(x - 3.4)^2 }{0.72} }$$
+            $$ P( GPA = x \mid N ) = \frac{1}{\sqrt{2 \pi} (0.493)} e^{-\frac{(x - 3)^2 }{0.486}} $$
             % $$ P( X_{AP} ) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
 
             Now, find $P(AP \mid H)$, $P(not AP \mid H)$, $P(AP \mid N)$, and $P(not AP \mid N)$
@@ -125,30 +125,28 @@
             $$ P(H | not AP) = \frac{P(not AP | H) P(H)}{P(AP)} =
             \frac{\frac{1}{3} * \frac{1}{3}}{\frac{5}{9}} = \frac{1}{9} * \frac{9}{5} = \frac{1}{5}$$
             $$ P(H | GPA = x) = \frac{P(GPA = x | H) P(H) }{P(GPA = x)} $$
-            $$  = \frac{ \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} } * \frac{1}{3} }{\frac{1}{\sqrt{2 \pi} 0.5} e^{(x - 3.1)^2 }}
-            = \frac{0.5e^{(x - 3.4)^2 - 1.2(x - 3.1)^2}}{1.8e^{1.2}} $$
-            $$ = 2.77e^{(x - 3.4)^2 - 1.2((x - 3.1)^2 - 1)} $$
-            $$ = 2.77e^{-0.2x^2 + 0.64x + 0.972} $$
+            $$  = \frac{ \frac{1}{\sqrt{2 \pi} 0.6} e^{-\frac{(x - 3.4)^2 }{0.72} } * \frac{1}{3} }{\frac{1}{\sqrt{2 \pi} 0.5} e^{-\frac{(x - 3.1)^2}{0.677}}}
+            = (0.277)e^{\frac{(0.043)x^2 + (0.139)x - 0.907}{0.487}} =  (0.277)e^{(0.088)x^2 + (0.285)x - 1.86}$$
 
             Now, we must find values where $P(H | AP, GPA = x) = 0.5 $ and $P(H | not AP, GPA = x) = 0.5 $, where
             $$ P(H | AP, GPA = x) = P(H | AP) * P(H | GPA = x) $$
-            $$  = \frac{1}{2} P(H | GPA = x) = 0.14e^{-0.2x^2 + 0.64x + 0.972}$$
+            $$  = \frac{1}{2} P(H | GPA = x) = (0.139)e^{(0.088)x^2 + (0.285)x - 1.86}$$
             $$ P(H | not AP, GPA = x) = P(H | not AP) * P(H | GPA = x) $$
-            $$ = \frac{1}{5} P(H | GPA = x) = 0.027e^{-0.2x^2 + 0.64x + 0.972}$$
+            $$ = \frac{1}{5} P(H | GPA = x) = (0.055)e^{(0.088)x^2 + (0.285)x - 1.86}$$
 
             find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | AP, GPA) \geq 0.5 $
-            $$ P(H | AP, GPA = x) = 0.14e^{-0.2x^2 + 0.64x + 0.972} \geq 0.5 $$
-            $$ -0.2x^2 + 0.64x \geq ln(0.5 / 0.14) - 0.972 $$
-            $$ x(0.64 - 0.2x) \geq 0.301 $$
+            $$ P(H | AP, GPA = x) = (0.139)e^{(0.088)x^2 + (0.285)x - 1.86} \geq 0.5 $$
+            $$ (0.088)x^2 + (0.285)x \geq ln(0.5 / 0.139) + 1.86 $$
+            $$ x(0.285 + (0.088)x) \geq 3.140 $$
 
             find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | not AP, GPA) \geq 0.5 $  \\
-            $$ P(H | not AP, GPA = x) = 0.027e^{-0.2x^2 + 0.64x + 0.972} \geq 0.5 $$
-            $$ -0.2x^2 + 0.64x \geq ln(0.5 / 0.027) - 0.972 $$
-            $$ x(0.64 - 0.2x) \geq 1.947 $$
+            $$ P(H | not AP, GPA = x) = (0.055)e^{(0.088)x^2 + (0.285)x - 1.86} \geq 0.5 $$
+            $$ (0.088)x^2 + (0.285)x \geq ln(0.5 / 0.055) + 1.86$$
+            $$ x(0.285 + (0.088)x) \geq 4.067 $$
 
             Our final prediction is: \\
-            If AP courses are taken, predict $H$ if the GPA is between ..., and
-            if AP courses are not taken, predict $H$ if the GPA is between ... \\
+            If AP courses are taken, predict $H$ if the GPA is between 3.140 and 4, and
+            if AP courses are not taken, predict $H$ if the GPA is between 1.987 and 4 \\
         \item
             $$ E[V]E[W] = E[VW] \ \ \ (to\ prove)$$
             $$ E[V] = \sum_{i = 1}^{n} v_i P(v_i), E[W] = \sum_{j = 1}^{n} w_i P(w_i) \ \ \ (Definition)$$
