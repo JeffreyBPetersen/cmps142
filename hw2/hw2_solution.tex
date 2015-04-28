@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, mathtools}
+\usepackage{amsmath, amssymb}
 \title{CMPS 142: Homework Assignment 2}
 \author{Raymond Colebaugh - 1377877\\Jeffery Petersen - ID\\Peter Czupil - 1317993}
 \begin{document}
@@ -52,7 +52,7 @@
                 \item
 	          We would expect 3NN or 5NN to be more accurate because the feature set is pretty 				large thus many combinations of features that lead to a certain label exist. Therefore 				comparing an instance to more than one of its nearest neighbors reveals more 					combinations than comparing an instance to just one nearest neighbor. The accuracy of 			the prediction when running the ibk algorithm in Weka supports this hypothesis. 3NN 				yields an accuracy of $\%72.6563$ and 5NN gives $\%73.1771$.
                 \item
-                   We would expect the results to be less accurate when running the classifierSs because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
+                   We would expect the results to be less accurate when running the classifiers because 				there is now a lot more random noise. This is not the case with logisitc regression, the 				accuracy actually stays the same. IB1 had a slight drop in accuracy (around $\%1$) with 				folding (using the entire training set as the test set kept an accuracy of $\%100$ for 				obvious reasons) and naive bayes had a much larger drop in accuracy (around $\%8$).
                 \item
                    When we ran nearest neighbor on the normalized (features) modified training set, 10 fold 		cross-folding was more inaccurate than nearest neighbor learning from the training sets 			of the previous parts. The accuracy when using the entire training set as the test set was 			$\%100$ however. Naive bayes was  more accurate than the previous two training sets 				and logistic regression was slightly more accurate than the previous training sets as well.   
             \end{enumerate}
@@ -70,20 +70,25 @@
                       are $(B, G), (G, B), (B, B)$. This leaves us with a probability
                       of $\frac{2}{3}$.
                 \item Given that we know one child is a boy, then we are left with two
-                    cases: either it was the first or the second child.  \\
+                    cases: either it was the first or the second child. In the case that
+                    we saw the first child, we can ignore the two last possibilities
+                    $(G, B)$ and $(G, G)$. In the case that we saw the second child, we
+                    can ignore the second and last cases, $(B, G)$ and $(G, G)$\\
                     \begin{tabular}{l | r}
-                        \begin{tabular}{c c}
-                            B & B \\
-                            B & G \\
-                            -G & B \\
-                            -G & G
+                        \begin{tabular}{l c c}
+                             & First Child \\
+                             & B & B \\
+                             & B & G \\
+                            $\rightarrow$ & G & B \\
+                            $\rightarrow$ & G & G
                         \end{tabular}
                         &
-                        \begin{tabular}{c c}
-                            B & B \\
-                            -B & G \\
-                            G & B \\
-                            -G & G
+                        \begin{tabular}{c c r}
+                            & Second Child \\
+                            B & B & \\
+                            B & G & $\leftarrow$ \\
+                            G & B & \\
+                            G & G & $\leftarrow$
                         \end{tabular}
                     \end{tabular} \\
                     This results in two cases where one child is a girl, out of four
