@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, mathtools}
 \title{CMPS 142: Homework Assignment 2}
 \author{Raymond Colebaugh - 1377877\\Jeffery Petersen - ID\\Peter Czupil - 1317993}
 \begin{document}
@@ -14,8 +14,27 @@
                         Nearest Neighbor (IB1) & 768 & 0   & 0      & 0      & 0 & 0 \\
                         Naive Bayes            & 586 & 182 & 0.2811 & 0.4133 & 61.8486 & 86.7082 \\
                         Logistic Regression    & 601 & 167 & 0.3063 & 0.3908 & 67.3928 & 81.9907
-                    \end{tabular}
+                    \end{tabular}\\\\
+                    Nearest Neighbor is the most accurate algorithm for this dataset. This is perhaps due to 			 the fact that the standard deviation for this particular data set is pretty high which 				 allows for a decision boundary with ample room on either side. 
                 \item 
+                   Running the Weka logistic regression algortihm on the supplied dataset produced the 				weight vector:
+		$$
+     			A=\begin{bmatrix}
+         				-0.1232 \\
+         				-0.0352 \\
+        				0.0133 \\
+         				-0.0006 \\
+				0.0012 \\
+				-0.0897 \\
+				-0.9452 \\
+				-0.0149
+       			 \end{bmatrix}
+  		$$
+		Out of 768 patients, 500 didn't have diabetes thus our
+		$$bias\ = \frac{500}{768} = 0.651$$\\
+		Therefore the equation for our decision boundary is: 
+		$$\Sigma_i \ a_i * x_i \ + \ 0.651\ = \ 0$$
+	     \\\\
                 \item
                     \begin{tabular}{l | c c c c c c}
                         Algorithm      & Correct & Incorrect & MAE & RMS & RAE (\%) & RSE (\%)\\
@@ -23,7 +42,7 @@
                         Nearest Neighbor (IB1) & 539 & 229 & 0.2982 & 0.5461 & 65.6046 & 114.5627 \\
                         Naive Bayes            & 586 & 182 & 0.2841 & 0.4168 & 62.5028 & 87.4349 \\
                         Logistic Regression    & 593 & 175 & 0.3094 & 0.3954 & 68.0819 & 82.9651
-                    \end{tabular}
+                    \end{tabular}\\\\
                 \item
                    After applying the normalization filter to the dataset, the attributes now have real                		numbered values ranging from $0$ to $1$.
 		Running the $10$-fold cross validation yields the same accuracies as well because 					although the attributes now have lesser values, the cumulative value has also decreased 			correspondingly.
