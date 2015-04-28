@@ -91,9 +91,9 @@
             \end{enumerate}
         \item
             Given the existing data, we can calculate the mean of the GPA of
-            honors students to be $ \frac{4.0 + 3.7 + 2.5}{3} = 3.4 $.
-            $$ P( X_{GPA} ) = \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} }$$
-            $$ P( X_{AP} ) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
+            honors students to be $ \frac{4.0 + 3.7 + 2.5}{3} = 3.4 $. The mean of the GPA for normal 			  students is 3.0.
+            $$ P( X_{GPA} | H ) = \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} }$$
+            $$ P( X_{AP}  | H) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
             Our final prediction is: \\
             If AP courses are taken, predict $H$ if the GPA is between ..., and
             if AP courses are not taken, predict $H$ if the GPA is between ... \\
