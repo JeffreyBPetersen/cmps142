@@ -113,6 +113,7 @@
             $$ P( GPA = x \mid H ) = \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} }$$
             % $$ P( GPA = x \mid N ) = \frac{1}{\sqrt{2 \pi} 0.5} e^{(x - 3)^2 } $$
             % $$ P( X_{AP} ) = \prod\limits_{i = 1}^{n} {P_H}^{x^{(i)}}(1 - P_H)^{1 - x^{(i)}} $$
+
             Now, find $P(AP \mid H)$, $P(not AP \mid H)$, $P(AP \mid N)$, and $P(not AP \mid N)$
             by maximum likelihood estimation for Bernoulli distribution.
 
@@ -121,15 +122,27 @@
             $$ P(H | not AP) = \frac{P(not AP | H) P(H)}{P(AP)} =
             \frac{\frac{1}{3} * \frac{1}{3}}{\frac{5}{9}} = \frac{1}{9} * \frac{9}{5} = \frac{1}{5}$$
             $$ P(H | GPA = x) = \frac{P(GPA = x | H) P(H) }{P(GPA = x)} $$
+            $$  = \frac{ \frac{1}{\sqrt{2 \pi} 0.6} e^{\frac{(x - 3.4)^2 }{1.2} } * \frac{1}{3} }{\frac{1}{\sqrt{2 \pi} 0.5} e^{(x - 3.1)^2 }}
+            = \frac{0.5e^{(x - 3.4)^2 - 1.2(x - 3.1)^2}}{1.8e^{1.2}} $$
+            $$ = 2.77e^{(x - 3.4)^2 - 1.2((x - 3.1)^2 - 1)} $$
+            $$ = 2.77e^{-0.2x^2 + 0.64x + 0.972} $$
 
+            Now, we must find values where $P(H | AP, GPA = x) = 0.5 $ and $P(H | not AP, GPA = x) = 0.5 $, where
             $$ P(H | AP, GPA = x) = P(H | AP) * P(H | GPA = x) $$
+            $$  = \frac{1}{2} P(H | GPA = x) = 0.14e^{-0.2x^2 + 0.64x + 0.972}$$
             $$ P(H | not AP, GPA = x) = P(H | not AP) * P(H | GPA = x) $$
+            $$ = \frac{1}{5} P(H | GPA = x) = 0.027e^{-0.2x^2 + 0.64x + 0.972}$$
 
-            find value(s) where $P(H | AP, GPA = value) = 0.5 $
-            find value(s) where $P(H | not AP, GPA = value) = 0.5 $
+            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | AP, GPA) \geq 0.5 $
+            $$ P(H | AP, GPA = x) = 0.14e^{-0.2x^2 + 0.64x + 0.972} \geq 0.5 $$
+            $$ -0.2x^2 + 0.64x \geq ln(0.5 / 0.14) - 0.972 $$
+            $$ x(0.64 - 0.2x) \geq 0.301 $$
 
-            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | AP, GPA) >= 0.5 $
-            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | not AP, GPA) >= 0.5 $  \\
+            find $value_1$ and $value_2$ where for $value_1 < GPA < value 2: P(H | not AP, GPA) \geq 0.5 $  \\
+            $$ P(H | not AP, GPA = x) = 0.027e^{-0.2x^2 + 0.64x + 0.972} \geq 0.5 $$
+            $$ -0.2x^2 + 0.64x \geq ln(0.5 / 0.027) - 0.972 $$
+            $$ x(0.64 - 0.2x) \geq 1.947 $$
+
             Our final prediction is: \\
             If AP courses are taken, predict $H$ if the GPA is between ..., and
             if AP courses are not taken, predict $H$ if the GPA is between ... \\
