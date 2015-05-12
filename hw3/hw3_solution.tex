@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, graphicx}
+\usepackage{amsmath, amssymb, graphicx, verbatim}
 \usepackage[margin=1in]{geometry}
 \title{CMPS 142: Homework Assignment 3}
 \author{Jeffrey Petersen - 1329242\\Ben Gordon - 1263760\\Raymond Colebaugh - 1377877}
@@ -25,29 +25,108 @@
                 23    &   27    &    0.25  &       0.7   &     1.3      &        0.1       &  25\%    &  25.75 & 0.7 & 93.371 \% \\
                 23    &   27    &    0.25  &       0.7   &     1.3      &        0.1       &  50\%    &  24.75 & 0.7 & 93.371 \%
             \end{tabular} $$
-            Where the expression for $c$ was $i$ and the expression for $\gamma$ was $10^i$.
+            Where the expression for $c$ was $i$ and the expression for $\gamma$ was $10^i$. Whenever one of the parameters was chosen
+            to be on a boundry, such as the first trial which found $C = 16$, we adjusted the boundries for the next execution to
+            more appropriately tune the parameter.\\
+            Performing a similar analysis using a second degree polynomial kernel with LibSVM yeilded the following results:
+            $$ \begin{tabular}{c c c c c c c | c c c}
+                $\gamma_{ min }$ & $\gamma_{ max }$ & $\gamma_{ step }$ & $coef0_{ min }$ & $coef0_{ max }$ & $coef0_{ step }$ & Sample Size & $\gamma$ & $coef0$ & Accuracy \\ \hline
+                5    &   20    &    1     &       -10     &     5        &        1         &  25\%    &  20 & 5 & 92.4582 \%   \\
+                15    &   30    &    1     &       0     &     15        &        1         &  25\%    &   &  &   \%   \\
+            \end{tabular} $$
+            Executing grid search on LibSVM took much longer than using Weka's SMO. Furthermore, the few outputs we received
+            yeilded a lower accuracy for a similar sample size.
         \item
             We can demonstrate the construction of a decision tree on a simple
-            binary dataset such as:
-            $$ \begin{tabular}{c c | c}
-                $x_1$ & $x_2$ & $y$ \\ \hline
-                0 & 1 & 1 \\
-                1 & 1 & 1 \\
-                1 & 0 & 0 \\
-                0 & 0 & 1 \\
-                1 & 0 & 0   % <-
-            \end{tabular} $$
-            In calculating the decision tree, we first decide the attribute to split
-            on for the first node by finding the sum the incorrect predictions. Should we split
-            on $x_1$, when $x_1 = 0$ there are no errors, and when $x_1 = 1$ there are
-            two errors. Should we split on $x_2$, if $x_2 = 0$ we have one error, and
-            if $x_2 = 1$ we have no errors. This makes a split on $x_2$ the better choice.
-            Then for the second node, should $x_2 = 0$, we split on the remaining attribute,
-            $x_1$. By following decision tree algorithm, we find a representation in the
-            following tree:
-            $$ \includegraphics[scale=0.5]{3-1.png} $$
-            However, there exists a simpler tree to classify this miniscule dataset,
-            should we allow compound conditionals on the nodes:
-            $$ \includegraphics[scale=0.5]{3-2.png} $$
+            binary dataset such as the following, which represents the function $x_1 XOR x_2 = y$
+
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 \\
+        1 & 0 & 0 & 1 \\
+        1 & 1 & 1 & 0 \\
+        1 & 1 & 1 & 0
+        \end{tabular} $$
+
+        In deciding the first node of our decision tree by following the the decision tree algorithm, we have
+        $x_1$ classifies $\frac{7}{10}$, $x_2$ classifies $\frac{6}{10}$, and  $x_1$ classifies $\frac{5}{10}$
+if $x_3$ \\
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+        0 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 \\
+        1 & 1 & 1 & 0 \\
+        1 & 1 & 1 & 0
+        \end{tabular} $$
+        $x_1$ classifies $\frac{4}{6} $, $x_2$ classifies $\frac{3}{6} $ \\
+        if $x_1$ \\
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                1 & 0 & 1 & 1 \\
+                1 & 1 & 1 & 0 \\
+                1 & 1 & 1 & 0 \\
+        \end{tabular} $$
+                if $x_2$ \\
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                        1 & 1 & 1 & 0 \\
+                        1 & 1 & 1 & 0 \\
+        \end{tabular} $$
+                else \\
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                        1 & 0 & 1 & 1 \\
+        \end{tabular} $$
+        else \\
+        $$ \begin{tabular}{c c c | c}
+        $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                0 & 1 & 1 & 1 \\
+                0 & 1 & 1 & 1 \\
+                0 & 1 & 1 & 1 \\
+                $$
+        \end{tabular} $$
+else \\
+    $$ \begin{tabular}{c c c | c}
+    $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+	0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 \\
+	1 & 0 & 0 & 1 \\
+    \end{tabular} $$
+    ($x_1$ classifies $\frac{4}{4}$, $x_2$ classifies $\frac{3}{4}$) \\
+        if $x_1$ \\
+        $$ \begin{tabular}{c c c | c}
+            $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                1 & 0 & 0 & 1 \\
+        \end{tabular} $$
+        else \\
+        $$ \begin{tabular}{c c c | c}
+            $x_1$ & $x_2$ & $x_3$ & $y$ \\ \hline
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+        \end{tabular} $$
+
+        The algorithm then will have producted the following tree:
+        $$ \includegraphics[scale=0.5]{3-2.png} $$
+        Then, without following the decision tree algorithm, we can simplify the logic to the following,
+        somitting values for convenience: \\
+        \begin{verbatim}
+        if x_1
+            if x_2
+        else
+            if x_2
+        \end{verbatim}
+
+
+        $$ \includegraphics[scale=0.5]{3-1.png} $$
 \end{enumerate}
 \end{document}

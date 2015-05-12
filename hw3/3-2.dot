@@ -1,0 +1,19 @@
+digraph G {
+root [label="if x_3"];
+l1 [label="if x_1"];
+l2 [label="if x_1"];
+l3 [label="if x_2"];
+root -> l1 [label="f"];
+root -> l2 [label="t"];
+o1 [label="Predict 0"];
+o2 [label="Predict 1"];
+o3 [label="Predict 1"];
+o4 [label="Predict 1"];
+o5 [label="Predict 0"];
+l1 -> o1 [label="f"];
+l1 -> o2 [label="t"];
+l2 -> o3 [label="f"];
+l2 -> l3 [label="t"];
+l3 -> o4 [label="f"];
+l3 -> o5 [label="t"];
+}
