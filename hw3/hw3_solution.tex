@@ -2,11 +2,16 @@
 \usepackage{amsmath, amssymb, graphicx}
 \usepackage[margin=1in]{geometry}
 \title{CMPS 142: Homework Assignment 3}
-\author{Jeffrey Petersen - 1329242\\Ben LASTNAME- ID\\Raymond Colebaugh - 1377877}
+\author{Jeffrey Petersen - 1329242\\Ben Gordon - 1263760\\Raymond Colebaugh - 1377877}
 \begin{document}
 \maketitle
 \begin{enumerate}
         \item 
+	    We want to find the minimum of the geometric margin, \[min_{w,b} \frac{y(w \cdot x_{i} + b)}{||w||^2}\]
+	    Our decision boundary will be of the form \(w \cdot{x_{i}}+b > 0 \), which can also be expressed as \(w_{1}x + w_{2}y + b > 0\).
+	    After graphing the data and evaluating them visually, we can find a good candidate for a decision boundary at \(y>-x+\frac{3}{2}\),
+	    or \(x+y-\frac{3}{2}>0\). Our \(w_{1}\) and \(w_{2}\) are both 1 and we have a margin of \(\frac{2}{||w||} = \sqrt{2}\). 
+	    The support vectors, then, are (1,1), (1,0), and (0,1).
         \item
             In executing grid search with the specified bounds on parameters, we
             determined the following costs and gammas for SMO:
