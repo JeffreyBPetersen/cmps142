@@ -13,6 +13,14 @@
                 \item
                     Assuming that the training set may contain duplicate $x$ values, the probability that all points lie outside the interval $(z_{\epsilon}, \theta]$ is the product of the probability from part (a) for all $x$'s in the training set. Therefore $p(X \notin (z_{\epsilon}, \theta]) = \prod_{i = 1}^{N} 1 - \epsilon = (1 - \epsilon)^N$ 
                 \item
+                    Since, $p((z_{\epsilon}, \theta])$ is equal to $\epsilon$, the probability that ${\hat {\theta}}$ has an error rate of at least $\epsilon$ is the probability that ${\hat {\theta}} \leq z_{\epsilon}$. This is the area under our density function, on the interval $[0, z_{\epsilon}]$. We had computed this area previously in part (b) which turned out to be equal to $(1 - \epsilon)^N$ where N is the cardinality of the training set. Therefore the probability that ${\hat {\theta}}$ has an error rate of at least $\epsilon$ is equal to $(1 - \epsilon)^N$.
+                \item
+                 To find the smallest $N$ s.t. $\epsilon  \leq error\ rate\ of\ {\hat {\theta}} \leq \delta$, we can take our result from (c) and use the following inequality: 
+$$ (1 - \epsilon)^N \leq \delta $$
+Taking the log of both sides gives us:
+$$Nlog(1 - \epsilon) \leq log(\delta)$$ 
+which implies:
+$$N \geq \frac{log(\delta)}{log(1 - \epsilon)}$$
             \end{enumerate}
         \item 
             First we calculate the $a_j$ and $z_j$ values in the network:
