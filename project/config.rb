@@ -1,5 +1,5 @@
 # Define memory size
-MEM = '1024'
+MEM = '2048'
 
 # Defind number of cores
 CPUS = 2

@@ -1,6 +1,7 @@
 # Install various packages and python modules for data analysis
 Exec {
-  path => '/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin',
+  path    => '/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin',
+  timeout => 0,
 }
 
 $deps = ['python3-pip', 'gfortran', 'liblapack-dev', 'libfreetype6',
