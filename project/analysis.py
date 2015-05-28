@@ -5,55 +5,44 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn import svm, tree, naive_bayes, ensemble
+from sklearn.cross_validation import cross_val_score
 
-def build_nb_classifier(df):
+def build_nb_classifier(X, y):
     """ Construct a classifier Naive Bayes
 
-    :param df: Pandas Data Frame
+    :param X: Example set
+    :param y: Prediction
     """
-    # Separate observations and target
-    features = ['AgeFixed', 'Gender', 'Pclass']
-    X = df[features]
-    y = df['Survived']
     nb = naive_bayes.GaussianNB()
     return nb.fit(X, y)
 
 
-def build_svm(df):
+def build_svm(X, y):
     """ Construct a classifier using a Support Vectore Machine
 
-    :param df: Pandas Data Frame
+    :param X: Example set
+    :param y: Prediction
     """
-    # Separate observations and target
-    features = ['AgeFixed', 'Gender', 'Pclass']
-    X = df[features]
-    y = df['Survived']
     svc = svm.LinearSVC()
     return svc.fit(X, y)
 
 
-def build_decision_tree(df):
+def build_decision_tree(X, y):
     """ Construct a classifier using a decision tree
 
-    :param df: Pandas Data Frame
+    :param X: Example set
+    :param y: Prediction
     """
-    # Separate observations and target
-    features = ['AgeFixed', 'Gender', 'Pclass']
-    X = df[features]
-    y = df['Survived']
     decision_tree = tree.DecisionTreeClassifier()
     return decision_tree.fit(X, y)
 
 
-def build_random_forest(df):
+def build_random_forest(X, y):
     """ Construct a classifier using a random forest
 
-    :param df: Pandas Data Frame
+    :param X: Example set
+    :param y: Prediction
     """
-    # Separate observations and target
-    features = ['AgeFixed', 'Gender', 'Pclass']
-    X = df[features]
-    y = df['Survived']
     forest = ensemble.RandomForestClassifier()
     return forest.fit(X, y)
 
@@ -77,31 +66,49 @@ def munge_data(df):
     average_age = df['Age'].mean()
     age_fix = lambda x: average_age
     df['AgeFixed'] = df['Age'].map(age_fix)
-    print(df[['AgeFixed', 'Gender', 'Pclass']])
+
     return df
 
 
 def main():
+    # Set number of folds for cross-validation
+    k = 10
+
     # Load Titanic passenger csv into a data frame
     df = pd.read_csv('train.csv', header=0)
     test_set = pd.read_csv('test.csv', header=0)
+
+    # Prepare data format
     df = munge_data(df)
+    test_set = munge_data(test_set)
+    target = df['Survived']
     survivors = df[(df['Survived'] == 1)]
     perishers = df[(df['Survived'] == 0)]
 
-    print("Survival Rate: %.2f" % df["Survived"].mean())
+    #print("Survival Rate: %.2f" % df["Survived"].mean())
     print("Average Age: %.2f" % df["Age"].mean())
     print("Average Age of Survivor: %.2f" % survivors["Age"].mean())
     print("Average Age of Perisher: %.2f" % perishers["Age"].mean())
     print(df.head())
 
+    # Finally, reduce our feature set
+    features = ['AgeFixed', 'Gender', 'Pclass']
+    df = df[features]
+    test_set = test_set[features]
+
     # Build classifiers
     classifiers = {
-            'nb': build_nb_classifier(df),
-            'svm': build_svm(df),
-            'forest': build_random_forest(df),
-            'tree': build_decision_tree(df)
+            'nb': build_nb_classifier(df, target),
+            'svm': build_svm(df, target),
+            'forest': build_random_forest(df, target),
+            'tree': build_decision_tree(df, target)
     }
+
+    # Ferform k-fold cross validation and render results
+    for key in classifiers.keys():
+        print("Executing " + str(k) + " folds cross-validation for " + key)
+        scores = cross_val_score(classifiers[key], df, target, cv=k)
+        print(scores)
 
 
 if __name__ == '__main__':
