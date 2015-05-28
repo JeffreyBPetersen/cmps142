@@ -59,7 +59,7 @@ def cross_validate_classifiers(classifiers, X, y, k):
     """
     for key in classifiers.keys():
         print("Executing " + str(k) + " folds cross-validation for " + key)
-        scores = cross_val_score(classifiers[key], X, y, cv=k)
+        scores = cross_val_score(classifiers[key], X, y, cv=k, n_jobs=-1)
         print(scores)
         max = scores.max()
         max_index = np.where(scores == max)[0][0] + 1
