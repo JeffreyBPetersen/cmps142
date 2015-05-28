@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # Analyze Titanic survivor data
 
+import argparse
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -47,6 +49,23 @@ def build_random_forest(X, y):
     return forest.fit(X, y)
 
 
+def cross_validate_classifiers(classifiers, X, y, k):
+    """  Perform k-fold cross validation and render accuracies
+
+    :param classifiers: Dictionary of classifiers, indexed by name
+    :param X: Example set
+    :param y: Prediction
+    :param k: Number of folds
+    """
+    for key in classifiers.keys():
+        print("Executing " + str(k) + " folds cross-validation for " + key)
+        scores = cross_val_score(classifiers[key], X, y, cv=k)
+        print(scores)
+        max = scores.max()
+        max_index = np.where(scores == max)[0][0] + 1
+        print("Max: " + str(max) + " (" + str(max_index) + " folds)")
+
+
 def munge_data(df):
     """ Work the data into an appropriate form for analysis
 
@@ -70,9 +89,11 @@ def munge_data(df):
     return df
 
 
-def main():
-    # Set number of folds for cross-validation
-    k = 10
+def main(args):
+    parser = argparse.ArgumentParser(description='Titanic survival prediction analysis tool')
+    parser.add_argument('-k', '--folds', help='Number of folds for cross validation',
+            required=False, default=10, type=int)
+    args = parser.parse_args(args)
 
     # Load Titanic passenger csv into a data frame
     df = pd.read_csv('train.csv', header=0)
@@ -104,12 +125,9 @@ def main():
             'tree': build_decision_tree(df, target)
     }
 
-    # Ferform k-fold cross validation and render results
-    for key in classifiers.keys():
-        print("Executing " + str(k) + " folds cross-validation for " + key)
-        scores = cross_val_score(classifiers[key], df, target, cv=k)
-        print(scores)
+    # Cross Validate k-fold
+    cross_validate_classifiers(classifiers, df, target, args.folds)
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
