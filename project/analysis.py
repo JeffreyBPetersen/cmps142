@@ -63,7 +63,8 @@ def cross_validate_classifiers(classifiers, X, y, k):
         print(scores)
         max = scores.max()
         max_index = np.where(scores == max)[0][0] + 1
-        print("Max: " + str(max) + " (" + str(max_index) + " folds)")
+        print("Mean: " + str(np.mean(scores)) + ", Max: " + str(max) +
+                " (" + str(max_index) + " folds)")
 
 
 def munge_data(df):
@@ -81,7 +82,7 @@ def munge_data(df):
     # Create a new Gender column from Sex with the mapping female -> 0, male -> 1
     df['Gender'] = df['Sex'].map(lambda x: 1 if x == 'male' else 0)
 
-    # Create a AgeFixed column, substituting the mean Age for msising values
+    # Create a AgeFixed column, substituting the mean Age for missing values
     average_age = df['Age'].mean()
     age_fix = lambda x: average_age
     df['AgeFixed'] = df['Age'].map(age_fix)

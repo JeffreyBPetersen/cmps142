@@ -7,3 +7,8 @@
 * `vagrant ssh` into the box, then execute `start`, an alias
   to start the iPython Notebook.
 * Browse to [http://localhost:8888](http://localhost:8888) in your browser
+
+# Documentation #
+* [Scikit Learn Intro Video Series](http://blog.kaggle.com/2015/04/08/new-video-series-introduction-to-machine-learning-with-scikit-learn/)
+* [Numpy, Pandas, Matplotlib Cheat Sheet](docs/Quandl+-+Pandas,+SciPy,+NumPy+Cheat+Sheet.pdf)
+
