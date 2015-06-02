@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn import svm, tree, naive_bayes, ensemble
+from sklearn.cross_validation import cross_val_predict
 from sklearn.cross_validation import cross_val_score
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
@@ -94,6 +95,20 @@ def split_dataset(X, y):
     return (train, test)
 
 
+def cross_validate_predict(classifiers, X, y, k):
+    """  Perform k-fold cross validation and render prediction function
+
+    :param classifiers: Dictionary of classifiers, indexed by name
+    :param X: Example set
+    :param y: Instance label
+    :param k: Number of folds
+    :returns: List of predictions
+    """
+    predictions = {}
+    for key in classifiers.keys():
+        prediction = cross_val_predict(classifiers[key], X, y, cv=k, n_jobs=-1)
+        predictions[key] = prediction
+
 def cross_validate_classifiers(classifiers, X, y, k):
     """  Perform k-fold cross validation and render accuracies
 
@@ -179,6 +194,7 @@ def main(args):
         tree_params = [{'max_depth': [2, 3, 4, None], 'max_features' : [2, 3, None]}]
     else:
         svm_params = None
+        forest_params = None
         tree_params = None
 
     # Build classifiers
@@ -201,5 +217,6 @@ def main(args):
     post_test_target = post_test['target']
     post_test = post_test['examples'][features]
 
+    
 if __name__ == '__main__':
     main(sys.argv[1:])
