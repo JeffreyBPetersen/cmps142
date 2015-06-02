@@ -108,6 +108,8 @@ def cross_validate_predict(classifiers, X, y, k):
     for key in classifiers.keys():
         prediction = cross_val_predict(classifiers[key], X, y, cv=k, n_jobs=-1)
         predictions[key] = prediction
+        
+    return predictions
 
 def cross_validate_classifiers(classifiers, X, y, k):
     """  Perform k-fold cross validation and render accuracies
@@ -213,6 +215,9 @@ def main(args):
     #cross_validate_classifiers(classifiers, df, target, args.folds)
     #post_split_train, post_split_test = split_dataset(df, target)
     cross_validate_classifiers(classifiers, post_train, post_train_target, args.folds)
+    
+    predictions = cross_validate_predict(classifiers, post_train, post_train_target, args.folds)
+    print(predictions)
     
     post_test_target = post_test['target']
     post_test = post_test['examples'][features]
