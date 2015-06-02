@@ -48,6 +48,12 @@ exec {'matplotlib':
   require => File['/usr/include/ft2build.h'],
 }
 
+exec {'seaborn':
+  command => 'pip3 install seaborn',
+  unless  => 'pip3 freeze | grep seaborn',
+  require => Exec['matplotlib'],
+}
+
 exec {'sklearn':
   command => 'pip3 install scikit-learn',
   unless  => 'pip3 freeze | grep scikit-learn',
