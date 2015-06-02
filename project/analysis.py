@@ -191,8 +191,15 @@ def main(args):
 
     # Cross Validate k-fold
     # TODO replace with split and score
-    cross_validate_classifiers(classifiers, df, target, args.folds)
-
+    post_train, post_test = split_dataset(df, target)
+    post_train_target = post_train['target']
+    post_train = post_train['examples'][features]
+    #cross_validate_classifiers(classifiers, df, target, args.folds)
+    #post_split_train, post_split_test = split_dataset(df, target)
+    cross_validate_classifiers(classifiers, post_train, post_train_target, args.folds)
+    
+    post_test_target = post_test['target']
+    post_test = post_test['examples'][features]
 
 if __name__ == '__main__':
     main(sys.argv[1:])
