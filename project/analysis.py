@@ -128,8 +128,31 @@ def cross_validate_classifiers(classifiers, X, y, k):
         print("Mean: " + str(np.mean(scores)) + ", Max: " + str(max) +
                 " (" + str(max_index) + " folds)")
 
+# TODO - Create more feature engineering methods
+ 
+def pclass_avg_age_fill(df):
+    for i in range(1,4):
+        pclass_df = df.loc[df['Pclass'] == i]
+        pclass_avg = pclass_df['Age'].mean()
+        age_fix = lambda x: pclass_avg
+        df['AgeFixed'] = df['Age'].map(age_fix)
+    
+    return df
+    
+def avg_age_fill(df):
+    """ Fill in missing values in the age column with the average age over the entire data set
+    
+    :param df: Pandas Data Frame
+    :returns: Data Frame with no missing values in the age column 
+    """
+    # Create a AgeFixed column, substituting the mean Age for missing values
+    average_age = df['Age'].mean()
+    age_fix = lambda x: average_age
+    df['AgeFixed'] = df['Age'].map(age_fix)
+    
+    return df
 
-def munge_data(df):
+def munge_data(df, fill_method):
     """ Work the data into an appropriate form for analysis
 
     A number of adjustments to the data need to be made to prepare it
@@ -139,6 +162,8 @@ def munge_data(df):
     substitution more robust.
 
     :param df: Pandas Data Frame
+    :param fill_method: Method used to fill in missing data for age
+                        (in the future this may be turned into a dictionary to allow for any feature to be filled)
     :returns: Data Frame after data adjustments
     """
     # Create a new Gender column from Sex with the mapping female -> 0, male -> 1
@@ -146,11 +171,13 @@ def munge_data(df):
 
     # Create a new Port column to represent the port Embarked from
     df['Port'] = df['Embarked'].map({'C': 1, 'Q': 2, 'S': 3, None: 0})
-
-    # Create a AgeFixed column, substituting the mean Age for missing values
-    average_age = df['Age'].mean()
-    age_fix = lambda x: average_age
-    df['AgeFixed'] = df['Age'].map(age_fix)
+    
+    fill_methods = {
+        'total_avg': avg_age_fill(df),
+        'pclass_avg': pclass_avg_age_fill(df)
+    }
+    
+    df = fill_methods[fill_method]
 
     return df
 
@@ -161,6 +188,8 @@ def main(args):
             required=False, default=10, type=int)
     parser.add_argument('-g', '--gridsearch', help='Perform grid search [ SVM ]',
             required=False, default=False, action='store_true')
+    parser.add_argument('--agefill', help='Method to use in order to fill in missing values in the age column',
+            required=False, default='total_avg')
     args = parser.parse_args(args)
 
     # Load Titanic passenger csv into a data frame
@@ -169,8 +198,8 @@ def main(args):
     test_set = pd.read_csv('test.csv', header=0)
 
     # Prepare data format
-    df = munge_data(df)
-    test_set = munge_data(test_set)
+    df = munge_data(df, args.agefill)
+    test_set = munge_data(test_set, args.agefill)
     target = df['Survived']
     survivors = df[(df['Survived'] == 1)]
     perishers = df[(df['Survived'] == 0)]
@@ -208,20 +237,11 @@ def main(args):
     }
 
     # Cross Validate k-fold
-    # TODO replace with split and score
+    # TODO - add scoring
     post_train, post_test = split_dataset(df, target)
     post_train_target = post_train['target']
     post_train = post_train['examples'][features]
-    #cross_validate_classifiers(classifiers, df, target, args.folds)
-    #post_split_train, post_split_test = split_dataset(df, target)
     cross_validate_classifiers(classifiers, post_train, post_train_target, args.folds)
-    
-    predictions = cross_validate_predict(classifiers, post_train, post_train_target, args.folds)
-    print(predictions)
-    
-    post_test_target = post_test['target']
-    post_test = post_test['examples'][features]
-
     
 if __name__ == '__main__':
     main(sys.argv[1:])
