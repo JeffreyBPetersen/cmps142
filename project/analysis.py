@@ -108,7 +108,6 @@ def cross_validate_predict(classifiers, X, y, k):
     for key in classifiers.keys():
         prediction = cross_val_predict(classifiers[key], X, y, cv=k, n_jobs=-1)
         predictions[key] = prediction
-        
     return predictions
 
 def cross_validate_classifiers(classifiers, X, y, k):
@@ -134,9 +133,8 @@ def pclass_avg_age_fill(df):
     for i in range(1,4):
         pclass_df = df.loc[df['Pclass'] == i]
         pclass_avg = pclass_df['Age'].mean()
-        age_fix = lambda x: pclass_avg
-        df['AgeFixed'] = df['Age'].map(age_fix)
-    
+        df.ix[df.Pclass == i, 'AgeFixed'] = pclass_avg
+    print(df['AgeFixed'])
     return df
     
 def avg_age_fill(df):
@@ -149,7 +147,6 @@ def avg_age_fill(df):
     average_age = df['Age'].mean()
     age_fix = lambda x: average_age
     df['AgeFixed'] = df['Age'].map(age_fix)
-    
     return df
 
 def munge_data(df, fill_method):
@@ -178,7 +175,6 @@ def munge_data(df, fill_method):
     }
     
     df = fill_methods[fill_method]
-
     return df
 
 
