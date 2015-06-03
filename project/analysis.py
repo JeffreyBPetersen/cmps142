@@ -128,6 +128,11 @@ def cross_validate_classifiers(classifiers, X, y, k):
                 " (" + str(max_index) + " folds)")
 
 # TODO - Create more feature engineering methods
+
+def user_age_fill(df, input_age):
+    age_fix = lambda x: input_age
+    df['AgeFixed'] = df['Age'].map(age_fix)
+    return df
  
 def pclass_avg_age_fill(df):
     for i in range(1,4):
@@ -184,7 +189,7 @@ def main(args):
             required=False, default=10, type=int)
     parser.add_argument('-g', '--gridsearch', help='Perform grid search [ SVM ]',
             required=False, default=False, action='store_true')
-    parser.add_argument('--agefill', help='Method to use in order to fill in missing values in the age column',
+    parser.add_argument('--agefill', help='Method to fill in missing age values [total_avg|pclass_avg]',
             required=False, default='total_avg')
     args = parser.parse_args(args)
 
