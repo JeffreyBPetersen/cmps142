@@ -139,7 +139,6 @@ def pclass_avg_age_fill(df):
         pclass_df = df.loc[df['Pclass'] == i]
         pclass_avg = pclass_df['Age'].mean()
         df.ix[df.Pclass == i, 'AgeFixed'] = pclass_avg
-    print(df['AgeFixed'])
     return df
     
 def avg_age_fill(df):
@@ -173,6 +172,9 @@ def munge_data(df, fill_method):
 
     # Create a new Port column to represent the port Embarked from
     df['Port'] = df['Embarked'].map({'C': 1, 'Q': 2, 'S': 3, None: 0})
+    
+    # Create a new column representing the family size of each individual
+    df['FamilySize'] = df['Parch'].add(df['SibSp'])
     
     fill_methods = {
         'total_avg': avg_age_fill(df),
