@@ -240,7 +240,6 @@ def main(args):
     }
 
     # Cross Validate k-fold
-    # TODO - add scoring
     post_train, post_test = split_dataset(df, target)
     post_train_target = post_train['target']
     post_train = post_train['examples'][features]
